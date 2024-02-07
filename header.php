@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html <?php language_attributes(); ?>>
 
 <head>
     <meta charset="<?php bloginfo('charset'); ?>" />
@@ -11,7 +11,8 @@
     <?php wp_head(); ?>
 </head>
 
-<body>
+<body <?php body_class(); ?>>
+<?php wp_body_open(); ?>
     <header>
         <?php       // Affiche le logo
         if (has_custom_logo()) :

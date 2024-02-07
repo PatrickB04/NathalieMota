@@ -32,5 +32,3 @@ function allow_svg_upload($mimes) {
     return $mimes;
 }
 add_filter('upload_mimes', 'allow_svg_upload');          --> mis en commentaire pour des raisons de sécurité  */
-
-?>

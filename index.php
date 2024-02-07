@@ -1,14 +1,22 @@
+<?php
+/**
+ * The main template file
+ *
+ * This is the most generic template file in a WordPress theme
+ * and one of the two required files for a theme (the other being style.css).
+ * It is used to display a page when nothing more specific matches a query.
+ * E.g., it puts together the home page when no home.php file exists.
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+ *
+ * @package WordPress
+ * @subpackage NathalieMota
+ * @since NathalieMota 1.0
+ */
 
-<?php get_header() ?>
+get_header(); ?>
 
-<h1>CECI est l'index - TITRE H1 -</h1>
-<h2>CECI est l'index - TITRE H2 -</h2>
-<h3>CECI est l'index - TITRE H3 -</h3>
-<p>CECI est l'index - PARAGRAPHE -</p>
-<p>CECI est l'index - PARAGRAPHE -</p>
-<p>CECI est l'index - PARAGRAPHE -</p>
-<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quidem illo libero itaque atque. Maxime quo animi iste, neque sed recusandae dolorem, quis esse veniam dolorum sunt perferendis culpa ipsum provident.
-CECI est l'index - PARAGRAPHE -</p>
-    
+
+
 
 <?php get_footer() ?>

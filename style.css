@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
 Theme Name: NathalieMota
 Theme URI: https://www.motaphoto.com
@@ -8,135 +9,198 @@ Version: 1.0
 Tags: openclassrooms, NathalieMota, motaphoto
 Text Domain: NathalieMota
 */
-
 /************************************ GÉNÉRALITÉS ************************************/
 @font-face {
-    font-family: 'Space_Mono';
-    src: url('./assets/fonts/Space_Mono/SpaceMono-Italic.ttf') format('truetype');
-    font-weight: 400;
-    font-style: italic;
+  font-family: "Space_Mono";
+  src: url("./assets/fonts/Space_Mono/SpaceMono-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
 }
-
 @font-face {
-    font-family: 'Space_Mono';
-    src: url('./assets/fonts/Space_Mono/SpaceMono-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Space_Mono";
+  src: url("./assets/fonts/Space_Mono/SpaceMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
 }
-
 @font-face {
-    font-family: 'Space_Mono';
-    src: url('./assets/fonts/Space_Mono/SpaceMono-Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
+  font-family: "Space_Mono";
+  src: url("./assets/fonts/Space_Mono/SpaceMono-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
 }
-
 @font-face {
-    font-family: 'Space_Mono';
-    src: url('./assets/fonts/Space_Mono/SpaceMono-BoldItalic.ttf') format('truetype');
-    font-weight: 700;
-    font-style: italic;
+  font-family: "Space_Mono";
+  src: url("./assets/fonts/Space_Mono/SpaceMono-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
 }
-
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/fonts/Poppins/Poppins-Light.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Poppins";
+  src: url("./assets/fonts/Poppins/Poppins-Light.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 }
 
-header{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-}
-
-ul, li{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding: 10px;
-    font-family: 'Space_mono';
-    font-size: 16px;
+ul, li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px;
+  font-family: "Space_mono";
+  font-size: 16px;
 }
 
 h1, h2, h3, a {
-    font-family: 'Space_Mono';
+  font-family: "Space_Mono";
 }
 
 h1 {
-font-weight: 700;
-font-style: italic;
-font-size: 96px;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 96px;
 }
 
 h2 {
-font-weight: 400;
-font-style: italic;
-font-size: 66px;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 66px;
 }
 
 h3 {
-    font-weight: 400;
-    font-size: 18px;
+  font-weight: 400;
+  font-size: 18px;
 }
 
 a {
-    font-weight: 400;
-    font-size: 18px;
-    font-style: normal;
-    text-decoration: none;
-    color: #000;
-    text-transform: uppercase;
+  font-weight: 400;
+  font-size: 18px;
+  font-style: normal;
+  text-decoration: none;
+  color: #000;
+  text-transform: uppercase;
 }
 
 a:hover {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 p {
-    font-family: 'Poppins';
-    font-weight: 700;
-    font-size: 14px;
+  font-family: "Poppins";
+  font-weight: 700;
+  font-size: 14px;
 }
 
 /************************************ FENÊTRE MODALE (POPUP) ************************************/
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+#menu-item-31 {
+  cursor: pointer;
 }
 
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%; /* Could be more or less, depending on screen size */
+.popup-hidden {
+  display: none;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+.popup-close {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  border-radius: 20px;
+  height: 20px;
+  width: 20px;
+  /* border:1px solid black; */
+  background: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.4s ease;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+.popup-close:hover {
+  transform: rotate(180deg);
 }
-/************************************************************************************************/
+
+/* Modal Header */
+.popup-header {
+  padding: 0;
+  margin: 0;
+}
+
+.popup-header h2 {    
+  margin: 0px;
+  padding: 0px;
+  line-height: 50px;
+}
+
+.ligne-form {
+  width: 263px;
+  height: 40px;
+  border-radius: 8px;
+  border:1px solid #84868b;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.multiligne-form {
+  width: 263px;
+  height: 210px;
+  border-radius: 8px;
+  border:1px solid #84868b;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.wpcf7-submit, .has-spinner {
+  width: 263px;
+  height: 50px;
+  border-radius: 2px;
+  border: none;
+  color: #000;
+  background-color: #b8bbc2;
+}
+
+.wpcf7-submit:hover, .has-spinner:hover {
+  color: #fff;
+  background-color: #000
+  ;
+}
+
+/* Modal Body */
+.popup-body .invalid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2px 16px;
+}
+
+.popup-body p {
+  width: 263px;
+}
+
+/* Modal Content */
+.popup-content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background-color: #fff;
+  color: #000;
+  margin: auto;
+  padding: 0;
+  border: 5px solid #000;
+  width: 40%;
+  max-width: 597px;
+  top: 50px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+/*************************************************************************************************/
