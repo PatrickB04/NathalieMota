@@ -31,3 +31,23 @@ document.addEventListener('wpcf7mailsent', function(event) {
         element.style.display = "none";
     }
 }, false);
+
+/************************************ Gestion du bouton "afficher plus" ************************************/
+jQuery(document).ready(function($) {
+    var page = 2; // Initialiser la page à 2 pour charger les éléments suivants
+    
+    $('#load-more').on('click', function() {
+        $.ajax({
+            url: ajaxurl,
+            type: 'post',
+            data: {
+                action: 'load_more_photos',
+                page: page,
+            },
+            success: function(response) {
+                $('#photos').append(response);
+                page++; // Incrémenter la page pour charger les éléments suivants lors du prochain clic
+            }
+        });
+    });
+});
