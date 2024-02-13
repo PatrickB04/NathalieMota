@@ -170,6 +170,163 @@ footer {
   background-color: #000;
   color: #FFF;
 }
+
+/******************************* Formatage single.php *******************************/
+.single-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+/* partie principale */
+.single-principal {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 80vw;
+  margin: auto;
+}
+
+.format-single>h2 {
+  text-transform: uppercase;
+  font-style: italic;
+  font-size: 66px;
+  width: 20vw;
+}
+
+.format-single>p {
+  text-transform: uppercase;
+  font-style: normal;
+  font-size: medium;
+}
+
+.format-photo-single {
+  width: 50vw;
+  text-align: right;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.image-single {
+  width: 40vw;
+  height: auto;
+  object-fit: contain;
+}
+/* partie CTA et navigation par photos */
+.single-commande{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 80vw;
+  margin: auto;
+  border-bottom: 1px solid #000;
+}
+
+.cta-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-top: 1px solid #000;
+  width: 48vw;
+}
+
+.cta-container>p {
+  line-height: 70px;
+  margin-top: 35px;
+}
+
+.cta-contact {
+  cursor: pointer;
+  width: 272px;
+  height: 50px;
+  border-radius: 2px;
+  padding: 8px 15px;
+  background-color: #d8d8d8;
+  font-family: "Space_Mono";
+  font-weight: normal;
+  font-size: medium;
+  margin-top: 35px;
+  margin-bottom: 35px;
+  border: none;
+  text-align: center;
+  line-height: 50px;
+}
+
+.cta-contact:hover{
+  background-color: #000;
+  color: #FFF;
+}
+
+.single-commande-nav-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 50vw;
+  text-align: right;
+  align-items: flex-end;
+  margin-top: 5px;
+}
+
+.single-commande-nav-miniature {
+  width: 81px;
+  height: 71px;
+  overflow: hidden;
+}
+
+.single-commande-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 81px;
+}
+
+.single-commande-fleche {
+  width: 38px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+/* partie recommandation d'autres photos */
+.single-recommande-container{
+  margin-bottom: 80px;
+  margin-top: 50px;
+}
+.single-recommande-titre {
+  text-transform: uppercase;
+  text-align: left;
+  width: 80vw;
+}
+.single-recommande-container-photos {
+  display: flex;
+  flex-direction: row;
+  width: 80vw;
+  margin: auto;
+  justify-content: space-between;
+  align-items: center;
+}
+.single-recommande-container-one-photo {
+  flex: 1 1 auto; /* pour que les images prennent une largeur égale */
+  position: relative;
+  padding-bottom: 50%; /* pour un ratio quasi carré quelque soit le format */
+  overflow: hidden;
+}
+
+.single-recommande-photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* pour couvrir tout l'espace du conteneur */
+}
+
+.spacer {
+  width: 2vw;
+}
+
 /************************************ FENÊTRE MODALE (POPUP) ************************************/
 #menu-item-31 {
   cursor: pointer;
