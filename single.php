@@ -35,7 +35,7 @@ get_header(); ?>
 		</div>
 			<div class="single-commande-nav-container">
 				<div class="single-commande-nav-miniature">
-					<img src="http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-5-scaled.jpg" alt="tutu">
+					<img src="http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-5-scaled.jpg" alt="tutu" width="90">
 				</div>
 				<div class="single-commande-nav">
 					<img class="single-commande-fleche" src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/arrow-left-long-solid.svg" alt="Flèche gauche">

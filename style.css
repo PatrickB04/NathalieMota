@@ -97,6 +97,7 @@ p {
 
 footer {
   border-top: 1px solid #000;
+  margin-top: 35px;
 }
 
 .main-container {
@@ -138,6 +139,30 @@ footer {
   align-items: center;
 }
 
+/* Filtres */
+select {
+  width: 260px;
+  height: 43px;
+  border-radius: 8px;
+  margin-top: 80px;
+  margin-bottom: 80px;
+  text-transform: uppercase;
+}
+
+.taxonomies {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.filtres {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
 /* Galerie */
 #photos {
   display: grid;
@@ -162,7 +187,6 @@ footer {
   font-weight: normal;
   font-size: medium;
   margin-top: 20px;
-  margin-bottom: 35px;
   border: none;
 }
 

@@ -1,9 +1,34 @@
-<div class="single-commande-nav-container">
-    <div class="single-commande-nav-miniature">
-        <img src="" alt="">
-    </div>
-    <div class="single-commande-nav">
-        <div class="single-commande-fleche"></div>
-        <div class="single-commande-fleche"></div>
-    </div>
-</div>
+        <!-- PHP pour récupérer les photos -->
+        <?php
+        $args = array(
+            'post_type' => 'photo',
+            'posts_per_page' => 8, // Limiter à 8 éléments par page
+        );
+        // La requête
+        $the_query = new WP_Query($args);
+        // La boucle
+        if ($the_query->have_posts()) {
+            echo '<div id="photos">';
+            while ($the_query->have_posts()) {
+                $the_query->the_post();
+                // Vérifie si l'article a une image mise en avant
+                if (has_post_thumbnail()) {
+                    // Affiche l'image mise en avant avec la taille personnalisée et une classe
+                    the_post_thumbnail('taille_personnalisee', array('class' => 'image-personnalisee'));
+                }
+            }
+            echo '</div>';
+            echo '<button id="load-more">Charger plus</button>';
+            /* Réinitialise les données de publication après une requête secondaire. */
+            wp_reset_postdata();
+        }
+        ?>
+REQUETE D'ORIGINE DANS HOME.PHP
+
+
+console.log('catégorie: ',categorie);
+console.log('format: ',format);
+console.log('tri date : ',tri_date);
+
+
+<img width="564" height="423" src="http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-scaled.jpg" class="image-personnalisee wp-post-image" alt="" decoding="async" loading="lazy" srcset="http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-scaled.jpg 2560w, http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-300x225.jpg 300w, http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-1024x768.jpg 1024w, http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-768x576.jpg 768w, http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-1536x1152.jpg 1536w, http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-2048x1536.jpg 2048w" sizes="(max-width: 564px) 100vw, 564px" />
