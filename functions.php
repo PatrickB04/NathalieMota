@@ -10,7 +10,12 @@ add_action('wp_enqueue_scripts', 'NathalieMota_enqueue_styles');
 // Enregistrer le script personnalisé du thème
 function enqueue_custom_script() {
     wp_enqueue_script('custom-script', get_template_directory_uri() . '/assets/js/custom-script.js', array('jquery'), '1.0.0', true);
-    wp_localize_script('custom-script', 'my_ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+    wp_localize_script('custom-script', 'my_ajax_object', array( // Tableau de tous les objets PHP qui sont passé à AJAX
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'current_post_id' => get_the_ID(),
+        'next_post_id' => get_next_post() ? get_next_post()->ID : null,
+        'previous_post_id' => get_previous_post() ? get_previous_post()->ID : null,
+    ));
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 
@@ -83,24 +88,89 @@ function load_more_photos() {
         );
     }
 
-    // Enregistrez les arguments de la requête dans le fichier de journalisation des erreurs
+    // Enregistre les arguments de la requête dans le fichier de journalisation des erreurs
     error_log('Arguments de la requête : ' . print_r($args, true));
 
     $query = new WP_Query($args);
 
-    // Enregistrez le nombre de publications trouvées dans le fichier de journalisation des erreurs
+    // Enregistre le nombre de publications trouvées dans le fichier de journalisation des erreurs
     error_log('Nombre de publications trouvées : ' . $query->found_posts);
 
     while ($query->have_posts()) {
         $query->the_post();
         if (has_post_thumbnail()) {
+            // Affiche l'image mise en avant avec la taille personnalisée et une classe + tout ce qui concerne l'effet survol
+            echo '<div class="portfolio-item">';
             the_post_thumbnail('taille_personnalisee', array('class' => 'image-personnalisee'));
-        }
+            echo '<div class="overlay">'; // Effet survol
+            echo '<div class="symbol"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_eye.svg" alt="Icon_eye"></div>'; // Oeil central
+            $reference = get_field('reference'); // Récupération de la référence
+            echo '<div class="reference">' . $reference . '</div>';  // Affichage de la référence
+            $categories = get_the_terms(get_the_ID(), 'categorie'); // Récupération de la catégorie
+            if (!empty($categories)) {
+                foreach ($categories as $category) {
+                    echo '<div class="category">' . $category->name . '</div>'; // Affichage de la catégorie
+                }
+            }
+            else
+            {
+                echo '<div class="category">Pas de catégorie</div>'; // Affichage du message en cas de catégorie non définie
 
-        // Enregistrez le titre de la publication dans le fichier de journalisation des erreurs
-        error_log('Titre de la publication : ' . get_the_title());
+            }
+            echo '<div class="icon"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_fullscreen.svg" alt="Icon_eye"></div></div></div>'; // lightbox
+            echo '</div>';
+        }
+// Enregistrez le titre de la publication dans le fichier de journalisation des erreurs
+// error_log('Titre de la publication : ' . get_the_title());
     }
     wp_die();
 }
 add_action('wp_ajax_load_more_photos', 'load_more_photos');
 add_action('wp_ajax_nopriv_load_more_photos', 'load_more_photos');
+
+
+// Pour la gestion des miniatures de la page SINGLE
+function get_post_thumbnail() {
+    $post_id = $_POST['post_id'];
+    $thumbnail_url = get_the_post_thumbnail_url($post_id);
+    $permalink = get_permalink($post_id);
+    echo '<a href="' . $permalink . '"><img src="' . $thumbnail_url . '" width="90"></a>';
+    wp_die();
+}
+add_action('wp_ajax_get_post_thumbnail', 'get_post_thumbnail');
+add_action('wp_ajax_nopriv_get_post_thumbnail', 'get_post_thumbnail');
+
+
+/********************* Gestion de la navigation sur la miniature *********************** */
+function script_array_id() {
+    // Récupère tous les posts de type 'photo'
+    $posts = get_posts(array(
+        'post_type' => 'photo',
+        'post_status' => 'publish',
+        'numberposts' => -1,
+        'orderby' => 'ID',
+        'order' => 'ASC',
+    ));
+
+    $actual_post_img = get_the_ID();
+    error_log($actual_post_img);
+
+    // Crée un tableau d'ID de posts
+    $post_ids = array_map(function($post) {
+        return $post->ID;
+    }, $posts);
+
+    $position = array_search($actual_post_img, $post_ids);
+    error_log($position);
+
+    // Enqueue du script custom-script.js
+    wp_enqueue_script('custom-script', get_template_directory_uri() . '/assets/js/custom-script.js', array('jquery'), '1.0', true);
+
+    // Passe les ID de posts au script
+    wp_localize_script('custom-script', 'my_ajax_object', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'post_ids' => $post_ids,
+        'position' => $position,
+    ));
+}
+add_action('wp_enqueue_scripts', 'script_array_id');

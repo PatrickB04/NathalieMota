@@ -1,34 +1,100 @@
-        <!-- PHP pour récupérer les photos -->
+<div class="single-commande-nav-container">
+    <div class="single-commande-nav-miniature">
         <?php
-        $args = array(
-            'post_type' => 'photo',
-            'posts_per_page' => 8, // Limiter à 8 éléments par page
-        );
-        // La requête
-        $the_query = new WP_Query($args);
-        // La boucle
-        if ($the_query->have_posts()) {
-            echo '<div id="photos">';
-            while ($the_query->have_posts()) {
-                $the_query->the_post();
-                // Vérifie si l'article a une image mise en avant
-                if (has_post_thumbnail()) {
-                    // Affiche l'image mise en avant avec la taille personnalisée et une classe
-                    the_post_thumbnail('taille_personnalisee', array('class' => 'image-personnalisee'));
-                }
+        // Récupérez l'ID du post suivant
+        $next_post = get_next_post();
+        if ($next_post) {
+            $next_post_id = $next_post->ID;
+            $next_post_slug = get_post_field('post_name', $next_post->ID);
+        } else {
+            // Si le post suivant n'existe pas, récupérez le post avec l'ID le plus petit
+            $args = array(
+                'post_type' => 'photo',
+                'post_status' => 'publish',
+                'numberposts' => 1,
+                'orderby' => 'ID',
+                'order' => 'ASC'
+            );
+            $first_post = get_posts($args);
+            if ($first_post) {
+                $next_post_id = $first_post[0]->ID;
+                $next_post_slug = get_post_field('post_name', $first_post[0]->ID);
+            } else {
+                echo 'Aucun post trouvé.';
+                return;
             }
+        }
+        $permalink = get_permalink($next_post_id);
+        error_log($next_post_id);
+        error_log($next_post_slug);
+        error_log($permalink);
+        // Vérifiez si le post suivant existe
+        if ($next_post_id) {
+            // Récupérez l'URL de l'image à la une du post suivant
+            $next_post_thumbnail_url = get_the_post_thumbnail_url($next_post_id);
+
+            // Utilisez l'URL récupérée pour l'image
+            echo '<div class="single-commande-nav-miniature">';
+            echo '<a href="' . $permalink . '"><img src="' . $next_post_thumbnail_url . '" alt="Miniature image suivante" width="90"></a>';
             echo '</div>';
-            echo '<button id="load-more">Charger plus</button>';
-            /* Réinitialise les données de publication après une requête secondaire. */
-            wp_reset_postdata();
+        } else {
+
+            echo 'Aucun post trouvé.';
         }
         ?>
-REQUETE D'ORIGINE DANS HOME.PHP
+    </div>
+    <div class="single-commande-nav">
+        <img class="single-commande-fleche" src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/arrow-left-long-solid.svg" alt="Flèche gauche">
+        <img class="single-commande-fleche" src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/arrow-right-long-solid.svg" alt="Flèche droite">
+    </div>
+</div>
 
 
-console.log('catégorie: ',categorie);
-console.log('format: ',format);
-console.log('tri date : ',tri_date);
 
 
-<img width="564" height="423" src="http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-scaled.jpg" class="image-personnalisee wp-post-image" alt="" decoding="async" loading="lazy" srcset="http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-scaled.jpg 2560w, http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-300x225.jpg 300w, http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-1024x768.jpg 1024w, http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-768x576.jpg 768w, http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-1536x1152.jpg 1536w, http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-10-2048x1536.jpg 2048w" sizes="(max-width: 564px) 100vw, 564px" />
+
+jQuery(document).ready(function($) {
+    var currentPostId = my_ajax_object.current_post_id;
+    var firstPostId = my_ajax_object.first_post_id;
+    var lastPostId = my_ajax_object.last_post_id;
+
+    // Charge la miniature du post suivant au chargement de la page
+    loadPostThumbnail(currentPostId);
+
+    // Lors du clique sur la flèche de droite, charge la miniature du post suivant
+    $('#next-post').click(function() {
+        currentPostId = getNextPostId(currentPostId);
+        loadPostThumbnail(currentPostId); // Charge la miniature du post suivant
+    });
+
+    // Lors du clique sur la flèche de gauche, charge la miniature du post précédent
+    $('#previous-post').click(function() {
+        currentPostId = getPreviousPostId(currentPostId);
+        loadPostThumbnail(currentPostId); // Charge la miniature du post précédent
+    });
+
+    // Si l'ID est le dernier, on récupère l'ID du premier
+    function getNextPostId(currentPostId) {
+        return currentPostId === lastPostId ? firstPostId : parseInt(currentPostId) + 1;
+    }
+
+    // Si l'ID est le premier, on récupère l'ID du dernier
+    function getPreviousPostId(currentPostId) {
+        return currentPostId === firstPostId ? lastPostId : parseInt(currentPostId) - 1;
+    }
+
+    function loadPostThumbnail(postId) {
+        $.ajax({
+            url: my_ajax_object.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'get_post_thumbnail',
+                post_id: postId
+            },
+            success: function(result) {
+                // Met à jour la miniature du post avec le résultat de la requête AJAX
+                $('#post-thumbnail').html(result);
+            }
+        });
+    }
+});
