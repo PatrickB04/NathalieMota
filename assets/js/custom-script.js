@@ -13,22 +13,90 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Affichage de la popup au click sur contact
+// Affichage de la popup au click sur contact du menu
+// document.addEventListener("DOMContentLoaded", function () {
+//     let popupHidden = document.querySelector('.popup-hidden');
+
+//     if (popupHidden) {
+//         document.getElementById("menu-item-31").addEventListener("click", function () {
+//             popupHidden.style.display = "flex";
+//             // Récupère le formulaire à l'intérieur de .popup-body
+//             let form = jQuery('.popup-body .wpcf7-form');
+//             if (form.length) {
+//                 // Réinitialise le formulaire CF7 (pour être sûr que le formulaire s'ouvre vierge)
+//                 form[0].reset();
+//             }
+//         });
+//     }
+// });
+
+// Affichage de la popup au click sur contact de la page single
+// document.addEventListener("DOMContentLoaded", function () {
+//     let popupHidden = document.querySelector('.popup-hidden');
+
+//     if (popupHidden) {
+//         document.getElementById("cta-contact").addEventListener("click", function () {
+//             popupHidden.style.display = "flex";
+//             // Récupère le formulaire à l'intérieur de .popup-body
+//             let form = jQuery('.popup-body .wpcf7-form');
+//             if (form.length) {
+//                 // Réinitialise le formulaire CF7 (pour être sûr que le formulaire s'ouvre vierge)
+//                 form[0].reset();
+//                 $("#email").val("my-email@waytolearnx.com");
+//             }
+//         });
+//     }
+// });
+// document.addEventListener("DOMContentLoaded", function () {
+//     let popupHidden = document.querySelector('.popup-hidden');
+
+//     if (popupHidden) {
+//         document.getElementById("cta-contact").addEventListener("click", function () {
+//             popupHidden.style.display = "flex";
+//             // Récupère le formulaire à l'intérieur de .popup-body
+//             let form = jQuery('.popup-body .wpcf7-form');
+//             if (form.length) {
+//                 // Réinitialise le formulaire CF7 (pour être sûr que le formulaire s'ouvre vierge)
+//                 form[0].reset();
+//                 jQuery("#reference").val('toto');
+//             }
+//         });
+//     }
+// });
 document.addEventListener("DOMContentLoaded", function () {
     let popupHidden = document.querySelector('.popup-hidden');
+    let ctaContact = document.getElementById("cta-contact");
+    let menuItem31 = document.getElementById("menu-item-31");
 
     if (popupHidden) {
-        document.getElementById("menu-item-31").addEventListener("click", function () {
-            popupHidden.style.display = "flex";
-            // Récupère le formulaire à l'intérieur de .popup-body
-            let form = jQuery('.popup-body .wpcf7-form');
-            if (form.length) {
-                // Réinitialise le formulaire CF7 (pour être sûr que le formulaire s'ouvre vierge)
-                form[0].reset();
-            }
-        });
+        if (menuItem31) {
+            menuItem31.addEventListener("click", function () {
+                popupHidden.style.display = "flex";
+                // Récupère le formulaire à l'intérieur de .popup-body
+                let form = jQuery('.popup-body .wpcf7-form');
+                if (form.length) {
+                    // Réinitialise le formulaire CF7 (pour être sûr que le formulaire s'ouvre vierge)
+                    form[0].reset();
+                }
+            });
+        }
+
+        if (ctaContact) {
+            ctaContact.addEventListener("click", function () {
+                popupHidden.style.display = "flex";
+                // Récupère le formulaire à l'intérieur de .popup-body
+                let form = jQuery('.popup-body .wpcf7-form');
+                if (form.length) {
+                    // Réinitialise le formulaire CF7 (pour être sûr que le formulaire s'ouvre vierge)
+                    form[0].reset();
+                    let reference = this.getAttribute('data-reference');
+                    jQuery("#reference").val(reference);
+                }
+            });
+        }
     }
 });
+
 
 // Fermeture de la fenêtre popup à l'envoi du formulaire
 document.addEventListener('wpcf7mailsent', function() {
@@ -139,6 +207,7 @@ jQuery(document).ready(function($) {
 // console.log('Photos restantes: ',remainingItems);
                     if (remainingItems <= 0) {
                         $('#load-more').hide();
+
                     }
                 }
             }
@@ -152,19 +221,27 @@ jQuery(document).ready(function($) {
     let position = parseInt(my_ajax_object.position);
     let curIndex = 0;
 
-    // Charge la miniature du post suivant au chargement de la page
-    loadPostThumbnail(postIds[position]);
-
-    // Lors du clique sur la flèche de droite, charge la miniature du post suivant
-    $('#next-post').click(function() {
+    // Lors du survol de la flèche de droite, charge la miniature du post suivant
+    $('#next-post').mouseenter(function() {
         curIndex = (position + 1) % postIds.length;
         loadPostThumbnail(postIds[curIndex]);
     });
 
-    // Lors du clique sur la flèche de gauche, charge la miniature du post précédent
-    $('#previous-post').click(function() {
+    // Lors du survol de la flèche de gauche, charge la miniature du post précédent
+    $('#previous-post').mouseenter(function() {
         curIndex = (position - 1 + postIds.length) % postIds.length;
         loadPostThumbnail(postIds[curIndex]);
+    });
+
+    // Lorsque la souris quitte la flèche, l'espace de la miniature reste vide
+    $('.single-commande-fleche').mouseleave(function() {
+        $('#post-thumbnail').empty();
+    });
+
+    // Lors du clic sur la flèche, redirige vers la page du post correspondant
+    $('.single-commande-fleche').click(function(e) {
+        e.preventDefault();
+        window.location.href = $(this).data('url');
     });
 
     function loadPostThumbnail(postId) {
@@ -176,11 +253,23 @@ jQuery(document).ready(function($) {
                 post_id: postId
             },
             success: function(result) {
+                let data = JSON.parse(result);
                 // Met à jour la miniature du post avec le résultat de la requête AJAX
-                $('#post-thumbnail').html(result);
+                $('#post-thumbnail').html(data.thumbnail);
+                // Stocke l'URL du post dans un attribut de données
+                $('.single-commande-fleche').data('url', data.url);
             }
         });
     }
 });
 
 /******************** Lightbox ******************************************/
+document.addEventListener("DOMContentLoaded", function() {
+    lightbox.option({
+      'alwaysShowNavOnTouchDevices': true,
+      'showImageNumberLabel': false,
+      'wrapAround': true,
+      'resizeDuration': 200
+    })
+  });
+  

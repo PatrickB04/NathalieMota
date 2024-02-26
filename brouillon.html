@@ -1,100 +1,18 @@
-<div class="single-commande-nav-container">
-    <div class="single-commande-nav-miniature">
-        <?php
-        // Récupérez l'ID du post suivant
-        $next_post = get_next_post();
-        if ($next_post) {
-            $next_post_id = $next_post->ID;
-            $next_post_slug = get_post_field('post_name', $next_post->ID);
-        } else {
-            // Si le post suivant n'existe pas, récupérez le post avec l'ID le plus petit
-            $args = array(
-                'post_type' => 'photo',
-                'post_status' => 'publish',
-                'numberposts' => 1,
-                'orderby' => 'ID',
-                'order' => 'ASC'
-            );
-            $first_post = get_posts($args);
-            if ($first_post) {
-                $next_post_id = $first_post[0]->ID;
-                $next_post_slug = get_post_field('post_name', $first_post[0]->ID);
-            } else {
-                echo 'Aucun post trouvé.';
-                return;
-            }
-        }
-        $permalink = get_permalink($next_post_id);
-        error_log($next_post_id);
-        error_log($next_post_slug);
-        error_log($permalink);
-        // Vérifiez si le post suivant existe
-        if ($next_post_id) {
-            // Récupérez l'URL de l'image à la une du post suivant
-            $next_post_thumbnail_url = get_the_post_thumbnail_url($next_post_id);
-
-            // Utilisez l'URL récupérée pour l'image
-            echo '<div class="single-commande-nav-miniature">';
-            echo '<a href="' . $permalink . '"><img src="' . $next_post_thumbnail_url . '" alt="Miniature image suivante" width="90"></a>';
-            echo '</div>';
-        } else {
-
-            echo 'Aucun post trouvé.';
-        }
-        ?>
-    </div>
-    <div class="single-commande-nav">
-        <img class="single-commande-fleche" src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/arrow-left-long-solid.svg" alt="Flèche gauche">
-        <img class="single-commande-fleche" src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/arrow-right-long-solid.svg" alt="Flèche droite">
-    </div>
-</div>
-
-
-
-
-
-jQuery(document).ready(function($) {
-    var currentPostId = my_ajax_object.current_post_id;
-    var firstPostId = my_ajax_object.first_post_id;
-    var lastPostId = my_ajax_object.last_post_id;
-
-    // Charge la miniature du post suivant au chargement de la page
-    loadPostThumbnail(currentPostId);
-
-    // Lors du clique sur la flèche de droite, charge la miniature du post suivant
-    $('#next-post').click(function() {
-        currentPostId = getNextPostId(currentPostId);
-        loadPostThumbnail(currentPostId); // Charge la miniature du post suivant
-    });
-
-    // Lors du clique sur la flèche de gauche, charge la miniature du post précédent
-    $('#previous-post').click(function() {
-        currentPostId = getPreviousPostId(currentPostId);
-        loadPostThumbnail(currentPostId); // Charge la miniature du post précédent
-    });
-
-    // Si l'ID est le dernier, on récupère l'ID du premier
-    function getNextPostId(currentPostId) {
-        return currentPostId === lastPostId ? firstPostId : parseInt(currentPostId) + 1;
-    }
-
-    // Si l'ID est le premier, on récupère l'ID du dernier
-    function getPreviousPostId(currentPostId) {
-        return currentPostId === firstPostId ? lastPostId : parseInt(currentPostId) - 1;
-    }
-
-    function loadPostThumbnail(postId) {
-        $.ajax({
-            url: my_ajax_object.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'get_post_thumbnail',
-                post_id: postId
-            },
-            success: function(result) {
-                // Met à jour la miniature du post avec le résultat de la requête AJAX
-                $('#post-thumbnail').html(result);
-            }
-        });
-    }
-});
+	<!-- Partie recommandation d'autres photos -->
+    <section class="single-recommande-container">
+        <h3 class="single-recommande-titre">vous aimerez aussi</h3>
+        <div class="single-recommande-container-photos">
+            <?php
+            $related_posts = get_related_posts($id);
+            foreach ($related_posts as $post) : setup_postdata($post); ?>
+                <div class="single-recommande-container-one-photo">
+                    <a href="<?php echo get_permalink(); ?>">
+                        <img class="single-recommande-photo" src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php the_title(); ?>">
+                    </a>
+                </div>
+                <div class="spacer"></div>
+            
+            <?php endforeach; wp_reset_postdata(); ?>
+        </div>
+    </section>
+    

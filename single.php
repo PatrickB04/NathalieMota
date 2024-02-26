@@ -12,30 +12,12 @@ get_header(); ?>
 	);
 	$my_posts = get_posts($args);
 
-
-	// global $wpdb;
-	// Requête SQL pour récupérer les IDs et les slugs des articles
-	// $query = "SELECT ID, post_name FROM {$wpdb->posts} WHERE post_type = 'photo' AND post_status = 'publish'";
-	// $posts = $wpdb->get_results($query);
-	
-	// if ($posts) {
-	// 	foreach ($posts as $post) {
-	// 		error_log("ID de l'article : " . $post->ID . ", Slug de l'article : " . $post->post_name);
-	// 	}
-	// } else {
-	// 	error_log('Aucun article trouvé.');
-	// }
-	
-
 	if ($my_posts) {
 		$id = $my_posts[0]->ID;
 
 		// Afficher les informations plus photo de la première partie
 		echo '<main class="single-container"><section class="single-principal"><div class="format-single"><h2>' . get_the_title($id) . '</h2>';
 		echo '<p>Référence: ' . get_field('reference', $id) . '</p>';
-// test
-		echo '<p>Pour test ---> ID N°' . $id . '</p>';
-// fin de test
 		echo '<p>Catégories: ' . implode(', ', wp_get_post_terms($id, 'categorie', array('fields' => 'names'))) . '</p>';
 		echo '<p>Formats: ' . implode(', ', wp_get_post_terms($id, 'format', array('fields' => 'names'))) . '</p>';
 		echo '<p>Type: ' . get_field('type', $id) . '</p>';
@@ -49,7 +31,8 @@ get_header(); ?>
 	<section class="single-commande">
 		<div class="cta-container">
 			<p>Cette photo vous intéresse ?</p>
-			<div class="cta-contact" action="submit">Contact</div>
+			<div id="cta-contact" class="cta-contact" data-reference="<?php $reference = get_field('reference');
+																		echo esc_attr($reference); ?>">Contact</div> <!-- Partie PHP pour passer la référence au mail -->
 		</div>
 		<div class="single-commande-nav-container">
 			<div class="single-commande-nav-miniature" id="post-thumbnail">
@@ -65,10 +48,31 @@ get_header(); ?>
 	<section class="single-recommande-container">
 		<h3 class="single-recommande-titre">vous aimerez aussi</h3>
 		<div class="single-recommande-container-photos">
-			<div class="single-recommande-container-one-photo"><img class="single-recommande-photo" src="http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-3-scaled.jpg" alt="toto"></div>
-			<div class="spacer"></div>
-			<div class="single-recommande-container-one-photo"><img class="single-recommande-photo" src="http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-2-scaled.jpg" alt="titi"></div>
-		</div>
+		<?php
+			$related_posts = get_related_posts($id);
+			foreach ($related_posts as $post) : setup_postdata($post); 
+				$reference = get_post_meta($post->ID, 'reference', true);
+				$categories = get_the_terms($post->ID, 'categorie'); // Récupère les catégories du post
+				$categorie = !empty($categories) ? array_shift($categories)->name : ''; // Prend le nom de la première catégorie
+				$lien = get_permalink($post->ID); // Récupère le lien du post
+				$post_thumbnail_id = get_post_thumbnail_id(); // Récupérer l'ID de l'image mise en avant
+				$image_url = wp_get_attachment_url($post_thumbnail_id); // Récupérer l'URL de l'image originale
+		?>
+				<div class="single-recommande-container-one-photo">
+					<div class="portfolio-item2">
+						<img class="single-recommande-photo" src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php the_title(); ?>">
+						<div class="overlay">
+							<div class="symbol"><a href="<?php echo $lien; ?>"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_eye.svg" alt="Icon_eye"></a></div>
+							<div class="reference"><?php echo $reference; ?></div>
+							<div class="category"><?php echo $categorie; ?></div>
+							<div class="icon"><a class="example-image-link" href="<?php echo $image_url ?>" data-lightbox="NathalieMota" data-title="<div><?php echo strtoupper($reference) ?></div><div><?php echo strtoupper($categorie) ?></div></div>"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_fullscreen.svg" alt="Full_screen"></a></div>
+						</div>
+					</div>
+				</div>
+
+		<?php endforeach;
+		wp_reset_postdata(); ?>
+				</div>
 	</section>
 
 	</main>

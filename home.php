@@ -73,6 +73,7 @@
 
         // La requête
         $the_query = new WP_Query($args);
+
         // La boucle
         if ($the_query->have_posts()) {
             echo '<div id="photos">';
@@ -80,12 +81,17 @@
                 $the_query->the_post();
                 // Vérifie si l'article a une image mise en avant
                 if (has_post_thumbnail()) {
+                // Récupérer l'ID de l'image mise en avant
+                $post_thumbnail_id = get_post_thumbnail_id();
+                // Récupérer l'URL de l'image originale
+                $image_url = wp_get_attachment_url($post_thumbnail_id);
+
                     // Affiche l'image mise en avant avec la taille personnalisée et une classe + tout ce qui concerne l'effet survol
                     echo '<div class="portfolio-item">';
                     the_post_thumbnail('taille_personnalisee', array('class' => 'image-personnalisee'));
 
                     echo '<div class="overlay">'; // Effet survol
-                    echo '<div class="symbol"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_eye.svg" alt="Icon_eye"></div>'; // Oeil central
+                    echo '<div class="symbol"><a href="' . get_permalink() . '"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_eye.svg" alt="Icon_eye"></a></div>'; // Oeil central
                     $reference = get_field('reference'); // Récupération de la référence
                     echo '<div class="reference">' . $reference . '</div>';  // Affichage de la référence
                     $categories = get_the_terms(get_the_ID(), 'categorie'); // Récupération de la catégorie
@@ -99,7 +105,7 @@
                         echo '<div class="category">Pas de catégorie</div>'; // Affichage du message en cas de catégorie non définie
 
                     }
-                    echo '<div class="icon"><a href="http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/cropped-cropped-Logo.png" class="lightbox-trigger"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_fullscreen.svg" alt="Full_screen"></a></div></div></div>'; // lightbox
+                    echo '<div class="icon"><a class="example-image-link" href="' . $image_url . '" data-lightbox="NathalieMota" data-title="<div>' . strtoupper($reference) . '</div><div>' . strtoupper($category->name) . '</div>"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_fullscreen.svg" alt="Full_screen"></a></div></div></div>'; // lightbox
                 }
             }
             echo '</div>';
