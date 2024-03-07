@@ -2,15 +2,21 @@
 
 // Enregistrer les styles du thème
 function NathalieMota_enqueue_styles() {
-    wp_enqueue_style('style', get_stylesheet_uri());
+    // wp_enqueue_style('style', get_stylesheet_uri());
     wp_enqueue_style('lightbox-style', get_template_directory_uri() . '/css/lightbox.css');
+    wp_enqueue_style('modal-style', get_template_directory_uri() . '/css/modal.css');
+    wp_enqueue_style('burger-style', get_template_directory_uri() . '/css/burger.css');
+    wp_enqueue_style('select-style', get_template_directory_uri() . '/css/jquery-ui.css');
+    wp_enqueue_style('style', get_stylesheet_uri());
 }
 add_action('wp_enqueue_scripts', 'NathalieMota_enqueue_styles');
 
 
 // Enregistrer le script personnalisé du thème
 function enqueue_custom_script() {
-    wp_enqueue_script('custom-script', get_template_directory_uri() . '/assets/js/custom-script.js', array('jquery'), '1.0.0', true);
+    wp_enqueue_script('sizzle', get_template_directory_uri() . '/assets/js/sizzle.js', array('jquery'), '1.0.0', true);
+    wp_enqueue_script('jquery-ui', get_template_directory_uri() . '/assets/js/jquery-ui.js', array('jquery','sizzle'), '1.0.0', true);
+    wp_enqueue_script('custom-script', get_template_directory_uri() . '/assets/js/custom-script.js', array('jquery','jquery-ui','sizzle'), '1.0.0', true);
     wp_enqueue_script('lightbox-plus-jquery', get_template_directory_uri() . '/assets/js/lightbox-plus-jquery.js', array('jquery'), '1.0.0', true); // script Lightbox
 
     wp_localize_script('custom-script', 'my_ajax_object', array( // Tableau de tous les objets PHP qui sont passé à AJAX
@@ -60,10 +66,10 @@ function load_more_photos() {
     $tri_date = isset($_POST['tri_date']) ? $_POST['tri_date'] : '';
 
     // Enregistrez les valeurs dans le fichier de journalisation des erreurs
-    error_log('Page: ' . $paged);
-    error_log('Catégorie: ' . $categorie);
-    error_log('Format: ' . $format);
-    error_log('Tri par date: ' . $tri_date);
+    // error_log('Page: ' . $paged);
+    // error_log('Catégorie: ' . $categorie);
+    // error_log('Format: ' . $format);
+    // error_log('Tri par date: ' . $tri_date);
 
     $args = array(
         'post_type' => 'photo',
@@ -92,12 +98,12 @@ function load_more_photos() {
     }
 
     // Enregistre les arguments de la requête dans le fichier de journalisation des erreurs
-    error_log('Arguments de la requête : ' . print_r($args, true));
+    // error_log('Arguments de la requête : ' . print_r($args, true));
 
     $query = new WP_Query($args);
 
     // Enregistre le nombre de publications trouvées dans le fichier de journalisation des erreurs
-    error_log('Nombre de publications trouvées : ' . $query->found_posts);
+    // error_log('Nombre de publications trouvées : ' . $query->found_posts);
 
     while ($query->have_posts()) {
         $query->the_post();
@@ -204,4 +210,3 @@ function get_related_posts($post_id, $number_of_posts = 2) {
     );
     return get_posts($args);
 }
-

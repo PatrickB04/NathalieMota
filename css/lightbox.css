@@ -8,7 +8,7 @@ body.lb-disable-scrolling {
   left: 0;
   z-index: 9999;
   background-color: black;
-  opacity: 0.8; /* Opacité à 80% selon les Spec Fonct */
+  opacity: 0.8; /* Opacité à 80% selon les Spécifications Fonctionnelles */
   display: none;
 }
 

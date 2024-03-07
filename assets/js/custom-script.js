@@ -13,63 +13,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Affichage de la popup au click sur contact du menu
-// document.addEventListener("DOMContentLoaded", function () {
-//     let popupHidden = document.querySelector('.popup-hidden');
-
-//     if (popupHidden) {
-//         document.getElementById("menu-item-31").addEventListener("click", function () {
-//             popupHidden.style.display = "flex";
-//             // Récupère le formulaire à l'intérieur de .popup-body
-//             let form = jQuery('.popup-body .wpcf7-form');
-//             if (form.length) {
-//                 // Réinitialise le formulaire CF7 (pour être sûr que le formulaire s'ouvre vierge)
-//                 form[0].reset();
-//             }
-//         });
-//     }
-// });
-
-// Affichage de la popup au click sur contact de la page single
-// document.addEventListener("DOMContentLoaded", function () {
-//     let popupHidden = document.querySelector('.popup-hidden');
-
-//     if (popupHidden) {
-//         document.getElementById("cta-contact").addEventListener("click", function () {
-//             popupHidden.style.display = "flex";
-//             // Récupère le formulaire à l'intérieur de .popup-body
-//             let form = jQuery('.popup-body .wpcf7-form');
-//             if (form.length) {
-//                 // Réinitialise le formulaire CF7 (pour être sûr que le formulaire s'ouvre vierge)
-//                 form[0].reset();
-//                 $("#email").val("my-email@waytolearnx.com");
-//             }
-//         });
-//     }
-// });
-// document.addEventListener("DOMContentLoaded", function () {
-//     let popupHidden = document.querySelector('.popup-hidden');
-
-//     if (popupHidden) {
-//         document.getElementById("cta-contact").addEventListener("click", function () {
-//             popupHidden.style.display = "flex";
-//             // Récupère le formulaire à l'intérieur de .popup-body
-//             let form = jQuery('.popup-body .wpcf7-form');
-//             if (form.length) {
-//                 // Réinitialise le formulaire CF7 (pour être sûr que le formulaire s'ouvre vierge)
-//                 form[0].reset();
-//                 jQuery("#reference").val('toto');
-//             }
-//         });
-//     }
-// });
+// Les différents modes d'ouverture de la modale : click sur "Contact" du menu principal, du menu burger ou du CTA
 document.addEventListener("DOMContentLoaded", function () {
     let popupHidden = document.querySelector('.popup-hidden');
     let ctaContact = document.getElementById("cta-contact");
     let menuItem31 = document.getElementById("menu-item-31");
+    let menuItem31Class = document.querySelector('#menu-menu-principal-1 .menu-item-31');
 
     if (popupHidden) {
-        if (menuItem31) {
+        if (menuItem31) { // Click sur contact menu principal
             menuItem31.addEventListener("click", function () {
                 popupHidden.style.display = "flex";
                 // Récupère le formulaire à l'intérieur de .popup-body
@@ -81,14 +33,23 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        if (ctaContact) {
-            ctaContact.addEventListener("click", function () {
+        if (menuItem31Class) { // Click sur contact menu burger
+            menuItem31Class.addEventListener("click", function () {
                 popupHidden.style.display = "flex";
-                // Récupère le formulaire à l'intérieur de .popup-body
                 let form = jQuery('.popup-body .wpcf7-form');
                 if (form.length) {
-                    // Réinitialise le formulaire CF7 (pour être sûr que le formulaire s'ouvre vierge)
                     form[0].reset();
+                }
+            });
+        }
+
+        if (ctaContact) { // Click sur contact de la page single (récupère la référence en cours)
+            ctaContact.addEventListener("click", function () {
+                popupHidden.style.display = "flex";
+                let form = jQuery('.popup-body .wpcf7-form');
+                if (form.length) {
+                    form[0].reset();
+                    // Récupère la référence pour l'ajouter au formulaire
                     let reference = this.getAttribute('data-reference');
                     jQuery("#reference").val(reference);
                 }
@@ -160,7 +121,7 @@ jQuery(document).ready(function($) {
 // console.log('Photos restantes début de la boucle filtre: ',remainingItems);
 
                 if ($('#photos').length) { // Vérifie si #photos existe
-                    // alert('La balise #photos existe dans le DOM.');
+// alert('La balise #photos existe dans le DOM.');
                     $('#photos').html(response);
                 } 
                 else 
@@ -168,7 +129,7 @@ jQuery(document).ready(function($) {
                     alert('La balise #photos n\'existe pas dans le DOM.');
                 }
                 if (occurrences !== 8) {
-                    // console.log('Photos restantes après occurrences de la boucle filtre: ',remainingItems);
+// console.log('Photos restantes après occurrences de la boucle filtre: ',remainingItems);
                     var remainingItems = occurrences - 8; 
                     if (remainingItems <= 0) {
                         $('#load-more').hide();
@@ -263,7 +224,7 @@ jQuery(document).ready(function($) {
     }
 });
 
-/******************** Lightbox ******************************************/
+/******************** Options de Lightbox2 ******************************************/
 document.addEventListener("DOMContentLoaded", function() {
     lightbox.option({
       'alwaysShowNavOnTouchDevices': true,
@@ -271,5 +232,25 @@ document.addEventListener("DOMContentLoaded", function() {
       'wrapAround': true,
       'resizeDuration': 200
     })
-  });
+});
   
+/******************** Menu Burger *****************************************************/
+  // Sélectionne la case à cocher
+let checkbox = document.getElementById("menu");
+
+// Ajoute un écouteur d'événements pour détecter les changements d'état de la case à cocher
+checkbox.addEventListener('change', function() {
+  let menu = document.querySelector('.m-menu');
+  let overlay = document.querySelector('.m-menu__overlay')
+  
+  // Vérifie si la case à cocher est cochée ou non
+  if (this.checked) {
+    // Ajoute la classe "active" lorsque la case est cochée
+    menu.classList.add('active');
+    overlay.classList.add('active')
+  } else {
+    // Supprime la classe "active" lorsque la case est décochée
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+  }
+});

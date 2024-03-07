@@ -48,16 +48,16 @@ get_header(); ?>
 	<section class="single-recommande-container">
 		<h3 class="single-recommande-titre">vous aimerez aussi</h3>
 		<div class="single-recommande-container-photos">
-		<?php
+			<?php
 			$related_posts = get_related_posts($id);
-			foreach ($related_posts as $post) : setup_postdata($post); 
+			foreach ($related_posts as $post) : setup_postdata($post);
 				$reference = get_post_meta($post->ID, 'reference', true);
 				$categories = get_the_terms($post->ID, 'categorie'); // Récupère les catégories du post
 				$categorie = !empty($categories) ? array_shift($categories)->name : ''; // Prend le nom de la première catégorie
 				$lien = get_permalink($post->ID); // Récupère le lien du post
 				$post_thumbnail_id = get_post_thumbnail_id(); // Récupérer l'ID de l'image mise en avant
 				$image_url = wp_get_attachment_url($post_thumbnail_id); // Récupérer l'URL de l'image originale
-		?>
+			?>
 				<div class="single-recommande-container-one-photo">
 					<div class="portfolio-item2">
 						<img class="single-recommande-photo" src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php the_title(); ?>">
@@ -70,12 +70,12 @@ get_header(); ?>
 					</div>
 				</div>
 
-		<?php endforeach;
-		wp_reset_postdata(); ?>
-				</div>
+			<?php endforeach;
+			wp_reset_postdata(); ?>
+		</div>
 	</section>
 
-	</main>
+	<!-- </main> -->
 </div>
 
 <?php

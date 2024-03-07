@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI Example Page</title>
+	<link href="./css/jquery-ui.css" rel="stylesheet">
+	<style>
+	select {
+		width: 200px;
+	}
+	</style>
+</head>
+<body>
+
+<select class="selectmenu">
+	<option>Slower</option>
+	<option>Slow</option>
+	<option selected="selected">Medium</option>
+	<option>Fast</option>
+	<option>Faster</option>
+</select>
+
+
+<script src="/Applications/MAMP/htdocs/NathalieMota/wp-includes/js/jquery/jquery.js"></script>
+<script src="./assets/js/sizzle.js"></script>
+<script src="./assets/js/jquery-ui.js"></script>
+<script>jQuery(".selectmenu").selectmenu();</script>
+</body>
+</html>
+
+
+sauvegarde custom-script.js
+/********* Modification de l'aspect des fenêtres de sélection des filtres ******************/
+jQuery('.selectmenu').selectmenu();
+
+
+// Sélectionnez l'élément select
+// jQuery(document).ready(function () {
+//     // Sélectionnez l'élément select
+//     var select = $(".selectmenu"); // Remplacez 'votreSelect' par l'id de votre élément select
+
+//     // Supprimez la transformation WebKit sur l'élément select
+//     select.css("-webkit-appearance", "none");
+
+//     // Parcourez toutes les options
+//     select.children('option').each(function () {
+//         // Supprimez la transformation WebKit sur chaque option
+//         $(this).css("-webkit-appearance", "none");
+
+//         // Ajoutez un événement de survol pour changer la couleur de fond en rouge
+//         $(this).hover(function () {
+//             $(this).css('background-color', 'red');
+//         }, function () {
+//             // Changez la couleur de fond en blanc lorsque la souris n'est plus sur l'option
+//             $(this).css('background-color', 'white');
+//         });
+//     });
+// })

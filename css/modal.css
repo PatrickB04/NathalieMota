@@ -1,107 +1,109 @@
 /************************************ FENÊTRE MODALE (POPUP) ************************************/
 #menu-item-31 {
-    cursor: pointer;
-  }
-  
-  .popup-hidden {
-    display: none;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .popup-close {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    border-radius: 20px;
-    height: 20px;
-    width: 20px;
-    /* border:1px solid black; */
-    background: white;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.4s ease;
-  }
-  
-  .popup-close:hover {
-    transform: rotate(180deg);
-  }
-  
-  /* Modal Header */
-  .popup-header {
-    padding: 0;
-    margin: 0;
-  }
-  
-  .popup-header h2 {    
-    margin: 0px;
-    padding: 0px;
-    line-height: 50px;
-  }
-  
-  .ligne-form {
-    width: 263px;
-    height: 40px;
-    border-radius: 8px;
-    border:1px solid #84868b;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .multiligne-form {
-    width: 263px;
-    height: 210px;
-    border-radius: 8px;
-    border:1px solid #84868b;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .wpcf7-submit, .has-spinner {
-    width: 263px;
-    height: 50px;
-    border-radius: 2px;
-    border: none;
-    color: #000;
-    background-color: #b8bbc2;
-  }
-  
-  .wpcf7-submit:hover, .has-spinner:hover {
-    color: #fff;
-    background-color: #000
-    ;
-  }
-  
-  /* Modal Body */
-  .popup-body .invalid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2px 16px;
-  }
-  
-  .popup-body p {
-    width: 263px;
-  }
-  
-  /* Modal Content */
-  .popup-content {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
-    background-color: #fff;
-    color: #000;
-    margin: auto;
-    padding: 0;
-    border: 5px solid #000;
-    width: 40%;
-    max-width: 597px;
-    top: 50px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
+  cursor: pointer;
+}
+
+.popup-hidden {
+  display: none;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-close {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  border-radius: 20px;
+  height: 20px;
+  width: 20px;
+  /* border:1px solid black; */
+  background: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 1.4s ease;
+}
+
+.popup-close:hover {
+  transform: rotate(180deg);
+}
+
+/* Modal Header */
+.popup-header {
+  padding: 0;
+  margin: 0;
+}
+
+.popup-header h2 {    
+  margin: 0px;
+  padding: 0px;
+  line-height: 50px;
+}
+
+.ligne-form {
+  width: 263px;
+  height: 40px;
+  border-radius: 8px;
+  border:1px solid #84868b;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.multiligne-form {
+  width: 263px;
+  height: 210px;
+  border-radius: 8px;
+  border:1px solid #84868b;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.wpcf7-submit, .has-spinner {
+  width: 263px;
+  height: 50px;
+  border-radius: 2px;
+  border: none;
+  color: #000;
+  background-color: #b8bbc2;
+}
+
+.wpcf7-submit:hover, .has-spinner:hover {
+  color: #fff;
+  background-color: #000
+  ;
+}
+
+/* Modal Body */
+.popup-body .invalid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2px 16px;
+}
+
+.popup-body p {
+  width: 263px;
+}
+
+/* Modal Content */
+.popup-content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background-color: #fff;
+  color: #000;
+  margin: auto;
+  padding: 0;
+  border: 5px solid #000;
+  width: 40%;
+  max-width: 597px;
+  top: 50px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  z-index: 1 !important;
+}
+/*************************************************************************************************/
