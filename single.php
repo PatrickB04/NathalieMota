@@ -2,6 +2,7 @@
 get_header(); ?>
 
 <div class="main-container">
+<div class="degrade"></div> <!-- ligne de décoration sous le header -->
 
 	<?php
 	$args = array(

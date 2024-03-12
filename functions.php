@@ -16,7 +16,7 @@ add_action('wp_enqueue_scripts', 'NathalieMota_enqueue_styles');
 function enqueue_custom_script() {
     wp_enqueue_script('sizzle', get_template_directory_uri() . '/assets/js/sizzle.js', array('jquery'), '1.0.0', true);
     wp_enqueue_script('jquery-ui', get_template_directory_uri() . '/assets/js/jquery-ui.js', array('jquery','sizzle'), '1.0.0', true);
-    wp_enqueue_script('custom-script', get_template_directory_uri() . '/assets/js/custom-script.js', array('jquery','jquery-ui','sizzle'), '1.0.0', true);
+    wp_enqueue_script('custom-script', get_template_directory_uri() . '/assets/js/custom-script.js', array('jquery','jquery-ui','sizzle','jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position', 'jquery-ui-menu', 'jquery-ui-selectmenu'), '1.0.0', true);
     wp_enqueue_script('lightbox-plus-jquery', get_template_directory_uri() . '/assets/js/lightbox-plus-jquery.js', array('jquery'), '1.0.0', true); // script Lightbox
 
     wp_localize_script('custom-script', 'my_ajax_object', array( // Tableau de tous les objets PHP qui sont passé à AJAX
@@ -210,3 +210,4 @@ function get_related_posts($post_id, $number_of_posts = 2) {
     );
     return get_posts($args);
 }
+

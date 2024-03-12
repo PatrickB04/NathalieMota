@@ -35,7 +35,7 @@
                 <div class="m-menu__header">
                     <?php the_custom_logo(); ?>
                     <label class="m-menu__toggle" for="menu">
-                      <img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/burger.svg" alt="icone menu burger" style="width: 30px;">
+                        <img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/burger.svg" alt="icone menu burger" style="width: 30px;">
                     </label>
                 </div>
 
@@ -45,13 +45,11 @@
                     <div class="m-menu__header">
                         <?php the_custom_logo(); ?>
                         <label class="m-menu__toggle" for="menu">
-                        <img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/close-burger.svg" alt="icone fermeture menu burger" style="width: 30px;">
+                            <img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/close-burger.svg" alt="icone fermeture menu burger" style="width: 30px;">
                         </label>
                     </div>
                     <?php wp_nav_menu(['theme_location' => 'main-menu',]); ?>
                 </div>
             </nav>
         </div>
-
-
     </header>

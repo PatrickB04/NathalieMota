@@ -16,27 +16,30 @@
             $formats = get_terms(array('taxonomy' => 'format', 'hide_empty' => false,));
 
             echo '<div class="taxonomies">';
-            echo '<select name="categorie" id="categorie" class="filtrer-categorie selectmenu">';
+            echo '<div class="custom-select">';
+            echo '<select name="categorie" id="categorie" class="filtrer-categorie">';
             echo '<option value="" selected disabled hidden>CATÉGORIE</option>';
             foreach ($categories as $categorie) {
                 echo '<option value="' . $categorie->slug . '">' . $categorie->name . '</option>';
             }
-            echo '</select>';
-
-            echo '<select name="format" id="format" class="filtrer-format selectmenu">';
+            echo '</select></div>';
+            echo '<div class="custom-select">';
+            echo '<select name="format" id="format" class="filtrer-format">';
             echo '<option value="" selected disabled hidden>FORMAT</option>';
             foreach ($formats as $format) {
                 echo '<option value="' . $format->slug . '">' . $format->name . '</option>';
             }
-            echo '</select></div>';
+            echo '</select></div></div>';
             ?>
 
             <!-- Fenêtre pour tri par date -->
-            <select name="tri_date" id="tri_date" class="filtrer-date selectmenu">
+            <div class="custom-select">
+            <select name="tri_date" id="tri_date" class="filtrer-date">
                 <option value="" selected disabled hidden>TRIER PAR</option>
                 <option value="asc">À partir des plus anciennes</option>
                 <option value="desc">À partir des plus récentes</option>
             </select>
+            </div>
         </div>
 
         <!-- PHP pour récupérer les photos -->
