@@ -1,80 +1,9 @@
-/************************************ Comportement de la modale ************************************/
-// Lorsque l'utilisateur clique sur (x), ferme le modal
-document.addEventListener('DOMContentLoaded', function() {
-    var closeButtons = document.querySelectorAll('.popup-close');
-
-    closeButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            var hidden = document.querySelector('.popup-hidden');
-            if (hidden) {
-                hidden.style.display = 'none';
-            }
-        });
-    });
-});
-
-// Les différents modes d'ouverture de la modale : click sur "Contact" du menu principal, du menu burger ou du CTA
-document.addEventListener("DOMContentLoaded", function () {
-    let popupHidden = document.querySelector('.popup-hidden');
-    let ctaContact = document.getElementById("cta-contact");
-    let menuItem31 = document.getElementById("menu-item-31");
-    let menuItem31Class = document.querySelector('#menu-menu-principal-1 .menu-item-31');
-
-    if (popupHidden) {
-        if (menuItem31) { // Click sur contact menu principal
-            menuItem31.addEventListener("click", function () {
-                popupHidden.style.display = "flex";
-                // Récupère le formulaire à l'intérieur de .popup-body
-                let form = jQuery('.popup-body .wpcf7-form');
-                if (form.length) {
-                    // Réinitialise le formulaire CF7 (pour être sûr que le formulaire s'ouvre vierge)
-                    form[0].reset();
-                }
-            });
-        }
-
-        if (menuItem31Class) { // Click sur contact menu burger
-            menuItem31Class.addEventListener("click", function () {
-                popupHidden.style.display = "flex";
-                let form = jQuery('.popup-body .wpcf7-form');
-                if (form.length) {
-                    form[0].reset();
-                }
-            });
-        }
-
-        if (ctaContact) { // Click sur contact de la page single (récupère la référence en cours)
-            ctaContact.addEventListener("click", function () {
-                popupHidden.style.display = "flex";
-                let form = jQuery('.popup-body .wpcf7-form');
-                if (form.length) {
-                    form[0].reset();
-                    // Récupère la référence pour l'ajouter au formulaire
-                    let reference = this.getAttribute('data-reference');
-                    jQuery("#reference").val(reference);
-                }
-            });
-        }
-    }
-});
-
-
-// Fermeture de la fenêtre popup à l'envoi du formulaire
-document.addEventListener('wpcf7mailsent', function() {
-    let element = document.querySelector('.popup-hidden');
-    if (element) {
-        element.style.display = "none";
-    }
-}, false);
-
-
-
 /************************************ Gestion du bouton "afficher plus" ************************************/
 jQuery(document).ready(function($) {
-    var ajaxurl = my_ajax_object.ajax_url;
-    var page = 2; // Initialiser la page à 2 pour charger les éléments suivants
-    var totalItems = 0; // Initialiser totalItems à 0
-    var remainingItems = 0; // Initialiser remainingItems à 0
+    let ajaxurl = my_ajax_object.ajax_url;
+    let page = 2; // Initialiser la page à 2 pour charger les éléments suivants
+    let totalItems = 0; // Initialiser totalItems à 0
+    let remainingItems = 0; // Initialiser remainingItems à 0
 
     // Faire une requête AJAX pour obtenir le nombre total d'articles du CPT "photo"
     $.ajax({
@@ -97,9 +26,9 @@ jQuery(document).ready(function($) {
 
     // Prise en compte des filtres 
     $('#categorie, #format, #tri_date').on('change', function() {
-        var categorie = $('#categorie').val();
-        var format = $('#format').val();
-        var tri_date = $('#tri_date').val();
+        let categorie = $('#categorie').val();
+        let format = $('#format').val();
+        let tri_date = $('#tri_date').val();
 // console.log('catégorie: ',categorie);
 // console.log('format: ',format);
 // console.log('tri date : ',tri_date);
@@ -114,8 +43,8 @@ jQuery(document).ready(function($) {
                 tri_date: tri_date
             },
             success: function(response) {
-                var sousChaine = "<img";
-                var occurrences = response.split(sousChaine).length - 1;
+                let sousChaine = "<img";
+                let occurrences = response.split(sousChaine).length - 1;
 
 // console.log('Nombre d\'occurrences de "' + sousChaine + '" : ', occurrences);
 // console.log('Photos restantes début de la boucle filtre: ',remainingItems);
@@ -130,7 +59,7 @@ jQuery(document).ready(function($) {
                 }
                 if (occurrences !== 8) {
 // console.log('Photos restantes après occurrences de la boucle filtre: ',remainingItems);
-                    var remainingItems = occurrences - 8; 
+                    remainingItems = occurrences - 8; 
                     if (remainingItems <= 0) {
                         $('#load-more').hide();
                     } else {
@@ -142,12 +71,38 @@ jQuery(document).ready(function($) {
             }
         });
     });
-        
+// $('#categorie, #format, #tri_date').on('change', function() {
+//     let categorie = $('#categorie').val();
+//     let format = $('#format').val();
+//     let tri_date = $('#tri_date').val();
+//     $.ajax({
+//         url: ajaxurl,
+//         type: 'post',
+//         data: {
+//             action: 'load_more_photos',
+//             page: 1, // Commencez à la première page après le filtrage
+//             categorie: categorie,
+//             format: format,
+//             tri_date: tri_date
+//         },
+//         success: function(response) {
+//             $('#photos').html(response.html); // Assumez que la réponse est un objet avec le HTML et le totalItems
+//             totalItems = response.totalItems; // Mettez à jour totalItems avec la nouvelle valeur
+//             remainingItems = totalItems - $('#photos img').length; // Calculez les remainingItems basé sur le nouveau total
+//             page = 2; // Réinitialisez la pagination
+//             if (remainingItems <= 0) {
+//                 $('#load-more').hide();
+//             } else {
+//                 $('#load-more').show();
+//             }
+//         }
+//     });
+// });
     
     $('#load-more').on('click', function() {
-        var categorie = $('#categorie').val();
-        var format = $('#format').val();
-        var tri_date = $('#tri_date').val();
+        let categorie = $('#categorie').val();
+        let format = $('#format').val();
+        let tri_date = $('#tri_date').val();
         $.ajax({
             url: ajaxurl,
             type: 'post',
@@ -165,7 +120,6 @@ jQuery(document).ready(function($) {
                     $('#photos').append(response);
                     page++;
                     remainingItems -= 8;
-// console.log('Photos restantes: ',remainingItems);
                     if (remainingItems <= 0) {
                         $('#load-more').hide();
 
@@ -256,11 +210,11 @@ checkbox.addEventListener('change', function() {
 });
 
 
-/******************** Filtres  avec méthode W3C *****************************************************/
+/******************** Filtres  avec méthode W3School *****************************************************/
 document.addEventListener("DOMContentLoaded", function() {
-var x, i, j, l, ll, selElmnt, a, b, c;
+let x, i, j, l, ll, selElmnt, a, b, c;
 
-let tri_date = "", categorie = "", format = ""; // Déclaration des variables ici pour qu'elles gardent leur valeur à chaque clic
+let tri_date = "", categorie = "", format = "", page =""; // Déclaration des variables ici pour qu'elles gardent leur valeur à chaque clic
 
 /* Look for any elements with the class "custom-select": */
 x = document.getElementsByClassName("custom-select");
@@ -284,7 +238,7 @@ for (i = 0; i < l; i++) {
     c.addEventListener("click", function(e) {
         /* When an item is clicked, update the original select box,
         and the selected item: */
-        var y, i, k, s, h, sl, yl;
+        let y, i, k, s, h, sl, yl;
         s = this.parentNode.parentNode.getElementsByTagName("select")[0];
         sl = s.length;
         h = this.parentNode.previousSibling;
@@ -303,57 +257,130 @@ for (i = 0; i < l; i++) {
         }
         h.click();
         /********************** Rajout Nathalie Mota *************************/
-        let selectedType = s.id;
+        // let selectedType = s.id;
         
-        // Récupère la valeur correspondante en fonction du type de sélection
-        if (selectedType === "tri_date") {
-            tri_date = s.options[s.selectedIndex].value;
-            console.log("Tri par date: " + tri_date);
-        } else if (selectedType === "categorie") {
-            categorie = s.options[s.selectedIndex].value;
-            console.log("Catégorie: " + categorie);
-        } else if (selectedType === "format") {
-            format = s.options[s.selectedIndex].value;
-            console.log("Format: " + format);
-        }
-        let ajaxurl = my_ajax_object.ajax_url;
-        $.ajax({
-            url: ajaxurl,
-            type: 'POST',
-            data: {
-                action: 'load_more_photos',
-                page: 1,
-                categorie: categorie,
-                format: format,
-                tri_date: tri_date
-            },
-            success: function(response) {
-                    let sousChaine = "<img";
-                    let occurrences = response.split(sousChaine).length - 1;
+        // // Récupère la valeur correspondante en fonction du type de sélection
+        // if (selectedType === "tri_date") {
+        //     tri_date = s.options[s.selectedIndex].value;
+        //     console.log("Tri par date: " + tri_date);
+        // } else if (selectedType === "categorie") {
+        //     categorie = s.options[s.selectedIndex].value;
+        //     console.log("Catégorie: " + categorie);
+        // } else if (selectedType === "format") {
+        //     format = s.options[s.selectedIndex].value;
+        //     console.log("Format: " + format);
+        // }
+        // let ajaxurl = my_ajax_object.ajax_url;
+        // $.ajax({
+        //     url: ajaxurl,
+        //     type: 'POST',
+        //     data: {
+        //         action: 'load_more_photos',
+        //         page: 1,
+        //         categorie: categorie,
+        //         format: format,
+        //         tri_date: tri_date
+        //     },
+        //     success: function(response) {
+        //             let sousChaine = "<img";
+        //             let occurrences = (response.split(sousChaine).length - 1)/3;
+        //             console.log('Variable occurences :',occurrences)
     
-                    if ($('#photos').length) {
-                        $('#photos').html(response);
-                    } 
-                    else 
-                    {
-                        alert('La balise #photos n\'existe pas dans le DOM.');
-                    }
-                    if (occurrences !== 8) {
-                        var remainingItems = occurrences - 8; 
-                        if (remainingItems <= 0) {
-                            $('#load-more').hide();
-                        } else {
-                            $('#load-more').show();
-                        }
-                    }
-                    
-                    page = 2;
-                },
-            function(xhr, status, error) {
-                // Traitement à effectuer en cas d'erreur de la requête
-                console.error(error);
+        //             if ($('#photos').length) {
+        //                 $('#photos').html(response);
+        //                 console.log('(#photos.length) : ',($('#photos').length));
+        //             } 
+        //             else 
+        //             {
+        //                 alert('La balise #photos n\'existe pas dans le DOM.');
+        //             }
+        //             if (occurrences <= 8) { // Si le nombre d'occurrences est inférieur ou égal à 8, masquer le bouton "Afficher plus"
+        //                 $('#load-more').hide();
+        //             } else {
+        //                 $('#load-more').show();
+        //             }
+        //             page = 2;
+        //         },
+            
+        //     function(xhr, status, error) {
+        //         // Traitement à effectuer en cas d'erreur de la requête
+        //         console.error(error);
+        //     }
+        // });        
+
+        let selectedType = s.id;
+
+// Récupère la valeur correspondante en fonction du type de sélection
+if (selectedType === "tri_date") {
+    tri_date = s.options[s.selectedIndex].value;
+    console.log("Tri par date: " + tri_date);
+} else if (selectedType === "categorie") {
+    categorie = s.options[s.selectedIndex].value;
+    console.log("Catégorie: " + categorie);
+} else if (selectedType === "format") {
+    format = s.options[s.selectedIndex].value;
+    console.log("Format: " + format);
+}
+let ajaxurl = my_ajax_object.ajax_url;
+
+// Nouvelle action AJAX pour récupérer le nombre de photos filtrées
+$.ajax({
+    url: ajaxurl,
+    type: 'POST',
+    data: {
+        action: 'get_total_photos_filtres',
+        page: 1,
+        categorie: categorie,
+        format: format,
+        tri_date: tri_date
+    },
+    success: function(response) {
+        let occurrences = parseInt(response);
+        console.log('Nombre total de photos :', occurrences);
+
+        // Appeler ensuite la fonction load_more_photos avec le nombre total de photos et d'autres paramètres
+        load_more_photos(occurrences, categorie, format, tri_date);
+    },
+    error: function(error) {
+        console.error(error);
+    }
+});
+function load_more_photos(occurrences, categorie, format, tri_date) {
+    $.ajax({
+        url: ajaxurl,
+        type: 'POST',
+        data: {
+            action: 'load_more_photos',
+            page: page, // Utiliser la variable 'page' définie globalement
+            categorie: categorie,
+            format: format,
+            tri_date: tri_date,
+            occurrences: occurrences
+        },
+        success: function(response) {
+            if ($('#photos').length) {
+                $('#photos').html(response);
+            } else {
+                alert('La balise #photos n\'existe pas dans le DOM.');
             }
-        });
+
+            // Mettre à jour le nombre d'occurrences restantes après chargement
+            occurrences = occurrences - 8;
+
+            // Afficher ou masquer le bouton "Afficher plus" en fonction du nombre total de photos
+            if (occurrences <= 0) {
+                $('#load-more').hide();
+            } else {
+                $('#load-more').show();
+            }
+            page++; // Incrémenter la variable 'page' pour la prochaine requête
+        },
+        error: function(error) {
+            // Traitement à effectuer en cas d'erreur de la requête
+            console.error(error);
+        }
+    });
+}
         /********************** Fin du rajout Nathalie Mota *************************/
 
     });
@@ -374,7 +401,7 @@ for (i = 0; i < l; i++) {
 function closeAllSelect(elmnt) {
   /* A function that will close all select boxes in the document,
   except the current select box: */
-  var x, y, i, xl, yl, arrNo = [];
+  let x, y, i, xl, yl, arrNo = [];
   x = document.getElementsByClassName("select-items");
   y = document.getElementsByClassName("select-selected");
   xl = x.length;

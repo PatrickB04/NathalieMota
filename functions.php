@@ -2,11 +2,9 @@
 
 // Enregistrer les styles du thème
 function NathalieMota_enqueue_styles() {
-    // wp_enqueue_style('style', get_stylesheet_uri());
     wp_enqueue_style('lightbox-style', get_template_directory_uri() . '/css/lightbox.css');
     wp_enqueue_style('modal-style', get_template_directory_uri() . '/css/modal.css');
     wp_enqueue_style('burger-style', get_template_directory_uri() . '/css/burger.css');
-    wp_enqueue_style('select-style', get_template_directory_uri() . '/css/jquery-ui.css');
     wp_enqueue_style('style', get_stylesheet_uri());
 }
 add_action('wp_enqueue_scripts', 'NathalieMota_enqueue_styles');
@@ -14,9 +12,8 @@ add_action('wp_enqueue_scripts', 'NathalieMota_enqueue_styles');
 
 // Enregistrer le script personnalisé du thème
 function enqueue_custom_script() {
-    wp_enqueue_script('sizzle', get_template_directory_uri() . '/assets/js/sizzle.js', array('jquery'), '1.0.0', true);
-    wp_enqueue_script('jquery-ui', get_template_directory_uri() . '/assets/js/jquery-ui.js', array('jquery','sizzle'), '1.0.0', true);
-    wp_enqueue_script('custom-script', get_template_directory_uri() . '/assets/js/custom-script.js', array('jquery','jquery-ui','sizzle','jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position', 'jquery-ui-menu', 'jquery-ui-selectmenu'), '1.0.0', true);
+    wp_enqueue_script('custom-script', get_template_directory_uri() . '/assets/js/custom-script.js', array('jquery'), '1.0.0', true);
+    wp_enqueue_script('modal', get_template_directory_uri() . '/assets/js/modal.js', array('jquery'), '1.0.0', true);
     wp_enqueue_script('lightbox-plus-jquery', get_template_directory_uri() . '/assets/js/lightbox-plus-jquery.js', array('jquery'), '1.0.0', true); // script Lightbox
 
     wp_localize_script('custom-script', 'my_ajax_object', array( // Tableau de tous les objets PHP qui sont passé à AJAX
@@ -56,6 +53,54 @@ function get_total_photos() {
 }
 add_action('wp_ajax_get_total_photos', 'get_total_photos');
 add_action('wp_ajax_nopriv_get_total_photos', 'get_total_photos');
+
+
+// Créer la fonction pour obtenir le nombre total de photos filtrées
+function get_total_photos_filtres() {
+    $paged = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    $categorie = isset($_POST['categorie']) ? $_POST['categorie'] : '';
+    $format = isset($_POST['format']) ? $_POST['format'] : '';
+    $tri_date = isset($_POST['tri_date']) ? $_POST['tri_date'] : '';
+
+    $args = array(
+        'post_type' => 'photo',
+        'posts_per_page' => -1, // Récupérer tous les résultats (pas de pagination)
+        'paged' => $paged,
+        'tax_query' => array(
+            'relation' => 'AND',
+        ),
+        'order' => $tri_date
+    );
+
+    if ($categorie != '') {
+        $args['tax_query'][] = array(
+            'taxonomy' => 'categorie',
+            'field' => 'slug',
+            'terms' => $categorie
+        );
+    }
+
+    if ($format != '') {
+        $args['tax_query'][] = array(
+            'taxonomy' => 'format',
+            'field' => 'slug',
+            'terms' => $format
+        );
+    }
+
+    // Effectuer la requête WP_Query
+    $query = new WP_Query($args);
+
+    // Compter le nombre de résultats
+    $total_photos = $query->found_posts;
+
+    echo $total_photos;
+
+    // Terminer la requête AJAX
+    wp_die();
+}
+add_action('wp_ajax_get_total_photos_filtres', 'get_total_photos_filtres');
+add_action('wp_ajax_nopriv_get_total_photos_filtres', 'get_total_photos_filtres');
 
 
 // Gestion du "Afficher plus" de la page d'accueil
@@ -119,7 +164,7 @@ function load_more_photos() {
             echo '<div class="portfolio-item">';
             the_post_thumbnail('taille_personnalisee', array('class' => 'image-personnalisee'));
             echo '<div class="overlay">'; // Effet survol
-            echo '<div class="symbol"><a href="' . get_permalink() . '"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_eye.svg" alt="Icon_eye"></a></div>'; // Oeil central
+            echo '<div class="symbol"><a href="' . get_permalink() . '"><img src="'.get_template_directory_uri() .'/assets/images/Icon_eye.svg" alt="Icon_eye"></a></div>'; // Oeil central
             $reference = get_field('reference'); // Récupération de la référence
             echo '<div class="reference">' . $reference . '</div>';  // Affichage de la référence
             $categories = get_the_terms(get_the_ID(), 'categorie'); // Récupération de la catégorie
@@ -133,7 +178,7 @@ function load_more_photos() {
                 echo '<div class="category">Pas de catégorie</div>'; // Affichage du message en cas de catégorie non définie
 
             }
-            echo '<div class="icon"><a class="example-image-link" href="' . $image_url . '" data-lightbox="NathalieMota" data-title="<div>' . strtoupper($reference) . '</div><div>' . strtoupper($category->name) . '</div>"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_fullscreen.svg" alt="Full_screen"></a></div></div></div>'; // lightbox
+            echo '<div class="icon"><a class="example-image-link" href="' . $image_url . '" data-lightbox="NathalieMota" data-title="<div>' . strtoupper($reference) . '</div><div>' . strtoupper($category->name) . '</div>"><img src="'.get_template_directory_uri() .'/assets/images/Icon_fullscreen.svg" alt="Full_screen"></a></div></div></div>'; // lightbox
             echo '</div>';
         }
 // Enregistrez le titre de la publication dans le fichier de journalisation des erreurs

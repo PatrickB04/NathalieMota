@@ -169,7 +169,7 @@ padding: 0;
 
 /* Gros titre "Photographe event"  avec image en fond */
 .h1accueil {
-  background-image: url("http://localhost:8888/NathalieMota/wp-content/uploads/2024/02/nathalie-11.jpg");
+  background-image: url("../../uploads/2024/02/nathalie-11.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

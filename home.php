@@ -94,7 +94,7 @@
                     the_post_thumbnail('taille_personnalisee', array('class' => 'image-personnalisee'));
 
                     echo '<div class="overlay">'; // Effet survol
-                    echo '<div class="symbol"><a href="' . get_permalink() . '"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_eye.svg" alt="Icon_eye"></a></div>'; // Oeil central
+                    echo '<div class="symbol"><a href="' . get_permalink() . '"><img src="'.get_template_directory_uri() .'/assets/images/Icon_eye.svg" alt="Icon_eye"></a></div>'; // Oeil central
                     $reference = get_field('reference'); // Récupération de la référence
                     echo '<div class="reference">' . $reference . '</div>';  // Affichage de la référence
                     $categories = get_the_terms(get_the_ID(), 'categorie'); // Récupération de la catégorie
@@ -108,7 +108,7 @@
                         echo '<div class="category">Pas de catégorie</div>'; // Affichage du message en cas de catégorie non définie
 
                     }
-                    echo '<div class="icon"><a class="example-image-link" href="' . $image_url . '" data-lightbox="NathalieMota" data-title="<div>' . strtoupper($reference) . '</div><div>' . strtoupper($category->name) . '</div>"><img src="http://localhost:8888/NathalieMota/wp-content/themes/NathalieMota/assets/images/Icon_fullscreen.svg" alt="Full_screen"></a></div></div></div>'; // lightbox
+                    echo '<div class="icon"><a class="example-image-link" href="' . $image_url . '" data-lightbox="NathalieMota" data-title="<div>' . strtoupper($reference) . '</div><div>' . strtoupper($category->name) . '</div>"><img src="'.get_template_directory_uri() .'/assets/images/Icon_fullscreen.svg" alt="Full_screen"></a></div></div></div>'; // lightbox
                 }
             }
             echo '</div>';
