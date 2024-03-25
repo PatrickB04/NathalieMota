@@ -113,7 +113,6 @@
             }
             echo '</div>';
             echo '<button id="load-more">Charger plus</button>';
-            /* Réinitialise les données de publication après une requête secondaire. */
             wp_reset_postdata();
         }
         ?>

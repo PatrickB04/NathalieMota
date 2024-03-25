@@ -1,6 +1,5 @@
 <?php
-
-// Enregistrer les styles du thème
+/*********************  Enregistrer les styles du thème ****************************************/
 function NathalieMota_enqueue_styles() {
     wp_enqueue_style('lightbox-style', get_template_directory_uri() . '/css/lightbox.css');
     wp_enqueue_style('modal-style', get_template_directory_uri() . '/css/modal.css');
@@ -10,7 +9,7 @@ function NathalieMota_enqueue_styles() {
 add_action('wp_enqueue_scripts', 'NathalieMota_enqueue_styles');
 
 
-// Enregistrer le script personnalisé du thème
+/*********************  Enregistrer le script personnalisé du thème *****************************/
 function enqueue_custom_script() {
     wp_enqueue_script('custom-script', get_template_directory_uri() . '/assets/js/custom-script.js', array('jquery'), '1.0.0', true);
     wp_enqueue_script('modal', get_template_directory_uri() . '/assets/js/modal.js', array('jquery'), '1.0.0', true);
@@ -26,7 +25,7 @@ function enqueue_custom_script() {
 add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 
 
-// Enregistrer les menus du thème
+/*********************  Enregistrer les menus du thème *****************************************/
 function register_my_menu() {
     register_nav_menu('main-menu', __('Menu principal', 'text-domain'));
     register_nav_menu('secondary-menu', __('Menu secondaire', 'text-domain'));
@@ -34,18 +33,18 @@ function register_my_menu() {
 add_action('after_setup_theme', 'register_my_menu');
 
 
-// Ajouter le support du logo personnalisé
+/*********************  Ajouter le support du logo personnalisé ********************************/
 add_theme_support('custom-logo');
 
 
-// Définir la taille personnalisée des images
+/*********************  Définir la taille personnalisée des images *****************************/
 function add_custom_image_size() {
     add_image_size('taille_personnalisee', 564, 495, true);
 }
 add_action('after_setup_theme', 'add_custom_image_size');
 
 
-// Créer la fonction pour obtenir le nombre total de photos
+/**********************  Obtenir le nombre total de photos ************************************/
 function get_total_photos() {
     $count_posts = wp_count_posts('photo');
     echo $count_posts->publish;
@@ -55,7 +54,7 @@ add_action('wp_ajax_get_total_photos', 'get_total_photos');
 add_action('wp_ajax_nopriv_get_total_photos', 'get_total_photos');
 
 
-// Créer la fonction pour obtenir le nombre total de photos filtrées
+/*************************  Obtenir le nombre total de photos filtrées ************************/
 function get_total_photos_filtres() {
     $paged = isset($_POST['page']) ? intval($_POST['page']) : 1;
     $categorie = isset($_POST['categorie']) ? $_POST['categorie'] : '';
@@ -64,7 +63,7 @@ function get_total_photos_filtres() {
 
     $args = array(
         'post_type' => 'photo',
-        'posts_per_page' => -1, // Récupérer tous les résultats (pas de pagination)
+        'posts_per_page' => -1,
         'paged' => $paged,
         'tax_query' => array(
             'relation' => 'AND',
@@ -103,18 +102,12 @@ add_action('wp_ajax_get_total_photos_filtres', 'get_total_photos_filtres');
 add_action('wp_ajax_nopriv_get_total_photos_filtres', 'get_total_photos_filtres');
 
 
-// Gestion du "Afficher plus" de la page d'accueil
+/****************************  "Afficher plus" de la page d'accueil *****************************/
 function load_more_photos() {
     $paged = $_POST['page'];
     $categorie = isset($_POST['categorie']) ? $_POST['categorie'] : '';
     $format = isset($_POST['format']) ? $_POST['format'] : '';
     $tri_date = isset($_POST['tri_date']) ? $_POST['tri_date'] : '';
-
-    // Enregistrez les valeurs dans le fichier de journalisation des erreurs
-    // error_log('Page: ' . $paged);
-    // error_log('Catégorie: ' . $categorie);
-    // error_log('Format: ' . $format);
-    // error_log('Tri par date: ' . $tri_date);
 
     $args = array(
         'post_type' => 'photo',
@@ -142,13 +135,7 @@ function load_more_photos() {
         );
     }
 
-    // Enregistre les arguments de la requête dans le fichier de journalisation des erreurs
-    // error_log('Arguments de la requête : ' . print_r($args, true));
-
     $query = new WP_Query($args);
-
-    // Enregistre le nombre de publications trouvées dans le fichier de journalisation des erreurs
-    // error_log('Nombre de publications trouvées : ' . $query->found_posts);
 
     while ($query->have_posts()) {
         $query->the_post();
@@ -158,8 +145,6 @@ function load_more_photos() {
             $post_thumbnail_id = get_post_thumbnail_id();
             // Récupérer l'URL de l'image originale
             $image_url = wp_get_attachment_url($post_thumbnail_id);
-                
-                
             // Affiche l'image mise en avant avec la taille personnalisée et une classe + tout ce qui concerne l'effet survol
             echo '<div class="portfolio-item">';
             the_post_thumbnail('taille_personnalisee', array('class' => 'image-personnalisee'));
@@ -181,8 +166,6 @@ function load_more_photos() {
             echo '<div class="icon"><a class="example-image-link" href="' . $image_url . '" data-lightbox="NathalieMota" data-title="<div>' . strtoupper($reference) . '</div><div>' . strtoupper($category->name) . '</div>"><img src="'.get_template_directory_uri() .'/assets/images/Icon_fullscreen.svg" alt="Full_screen"></a></div></div></div>'; // lightbox
             echo '</div>';
         }
-// Enregistrez le titre de la publication dans le fichier de journalisation des erreurs
-// error_log('Titre de la publication : ' . get_the_title());
     }
     wp_die();
 }
@@ -190,7 +173,7 @@ add_action('wp_ajax_load_more_photos', 'load_more_photos');
 add_action('wp_ajax_nopriv_load_more_photos', 'load_more_photos');
 
 
-// Pour la gestion des miniatures de la page SINGLE
+/********************* Gestion de la navigation sur la miniature *****************************/
 function get_post_thumbnail() {
     $post_id = $_POST['post_id'];
     $thumbnail_url = get_the_post_thumbnail_url($post_id);
@@ -201,8 +184,6 @@ function get_post_thumbnail() {
 add_action('wp_ajax_get_post_thumbnail', 'get_post_thumbnail');
 add_action('wp_ajax_nopriv_get_post_thumbnail', 'get_post_thumbnail');
 
-
-/********************* Gestion de la navigation sur la miniature *********************** */
 function script_array_id() {
     // Récupère tous les posts de type 'photo'
     $posts = get_posts(array(
@@ -236,7 +217,7 @@ function script_array_id() {
 }
 add_action('wp_enqueue_scripts', 'script_array_id');
 
-/***************************** Affichage aléatoire des photos de la partie vous aimerez *************/
+/******************* Affichage aléatoire des photos de la partie vous aimerez ******************/
 function get_related_posts($post_id, $number_of_posts = 2) {
     $categories = wp_get_post_terms($post_id, 'categorie', array('fields' => 'ids'));
     $args = array(

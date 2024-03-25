@@ -1,11 +1,10 @@
 /************************************ Gestion du bouton "afficher plus" ************************************/
 jQuery(document).ready(function($) {
     let ajaxurl = my_ajax_object.ajax_url;
-    let page = 2; // Initialiser la page à 2 pour charger les éléments suivants
-    let totalItems = 0; // Initialiser totalItems à 0
-    let remainingItems = 0; // Initialiser remainingItems à 0
+    let page = 2;
+    let totalItems = 0;
+    let remainingItems = 0;
 
-    // Faire une requête AJAX pour obtenir le nombre total d'articles du CPT "photo"
     $.ajax({
         url: ajaxurl,
         type: 'post',
@@ -15,9 +14,6 @@ jQuery(document).ready(function($) {
         success: function(response) {
             totalItems = parseInt(response); // Mettre à jour totalItems avec la réponse du serveur
             remainingItems = totalItems - 8; // Enlever 8 de ce nombre
-// console.log('Nombre total de photos: ',totalItems);
-// console.log('Photos restantes au tout début ajax: ',remainingItems);
-            // Cacher le bouton si tous les éléments sont déjà chargés
             if (remainingItems <= 0) {
                 $('#load-more').hide();
             }
@@ -29,15 +25,13 @@ jQuery(document).ready(function($) {
         let categorie = $('#categorie').val();
         let format = $('#format').val();
         let tri_date = $('#tri_date').val();
-// console.log('catégorie: ',categorie);
-// console.log('format: ',format);
-// console.log('tri date : ',tri_date);
+
         $.ajax({
             url: ajaxurl,
             type: 'post',
             data: {
                 action: 'load_more_photos',
-                page: 1, // Commencez à la première page
+                page: 1,
                 categorie: categorie,
                 format: format,
                 tri_date: tri_date
@@ -46,11 +40,7 @@ jQuery(document).ready(function($) {
                 let sousChaine = "<img";
                 let occurrences = response.split(sousChaine).length - 1;
 
-// console.log('Nombre d\'occurrences de "' + sousChaine + '" : ', occurrences);
-// console.log('Photos restantes début de la boucle filtre: ',remainingItems);
-
-                if ($('#photos').length) { // Vérifie si #photos existe
-// alert('La balise #photos existe dans le DOM.');
+                if ($('#photos').length) {
                     $('#photos').html(response);
                 } 
                 else 
@@ -58,7 +48,6 @@ jQuery(document).ready(function($) {
                     alert('La balise #photos n\'existe pas dans le DOM.');
                 }
                 if (occurrences !== 8) {
-// console.log('Photos restantes après occurrences de la boucle filtre: ',remainingItems);
                     remainingItems = occurrences - 8; 
                     if (remainingItems <= 0) {
                         $('#load-more').hide();
@@ -71,33 +60,6 @@ jQuery(document).ready(function($) {
             }
         });
     });
-// $('#categorie, #format, #tri_date').on('change', function() {
-//     let categorie = $('#categorie').val();
-//     let format = $('#format').val();
-//     let tri_date = $('#tri_date').val();
-//     $.ajax({
-//         url: ajaxurl,
-//         type: 'post',
-//         data: {
-//             action: 'load_more_photos',
-//             page: 1, // Commencez à la première page après le filtrage
-//             categorie: categorie,
-//             format: format,
-//             tri_date: tri_date
-//         },
-//         success: function(response) {
-//             $('#photos').html(response.html); // Assumez que la réponse est un objet avec le HTML et le totalItems
-//             totalItems = response.totalItems; // Mettez à jour totalItems avec la nouvelle valeur
-//             remainingItems = totalItems - $('#photos img').length; // Calculez les remainingItems basé sur le nouveau total
-//             page = 2; // Réinitialisez la pagination
-//             if (remainingItems <= 0) {
-//                 $('#load-more').hide();
-//             } else {
-//                 $('#load-more').show();
-//             }
-//         }
-//     });
-// });
     
     $('#load-more').on('click', function() {
         let categorie = $('#categorie').val();
@@ -130,7 +92,7 @@ jQuery(document).ready(function($) {
     });
 });
 
-/******************** Miniature avec flèches de navigation page SINGLE ******************************************/
+/*************************************** Miniature avec flèches de navigation page SINGLE ******************************************/
 jQuery(document).ready(function($) {
     let postIds = my_ajax_object.post_ids;
     let position = parseInt(my_ajax_object.position);
@@ -178,7 +140,7 @@ jQuery(document).ready(function($) {
     }
 });
 
-/******************** Options de Lightbox2 ******************************************/
+/********************************************** Options de Lightbox2 ********************************************************************/
 document.addEventListener("DOMContentLoaded", function() {
     lightbox.option({
       'alwaysShowNavOnTouchDevices': true,
@@ -188,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 });
   
-/******************** Menu Burger *****************************************************/
+/********************************************** Menu Burger *******************************************************************************/
   // Sélectionne la case à cocher
 let checkbox = document.getElementById("menu");
 
@@ -210,11 +172,11 @@ checkbox.addEventListener('change', function() {
 });
 
 
-/******************** Filtres  avec méthode W3School *****************************************************/
+/********************************* Personnalisation des filtres  avec la méthode W3School *****************************************************/
 document.addEventListener("DOMContentLoaded", function() {
 let x, i, j, l, ll, selElmnt, a, b, c;
 
-let tri_date = "", categorie = "", format = "", page =""; // Déclaration des variables ici pour qu'elles gardent leur valeur à chaque clic
+let tri_date = "", categorie = "", format = "", page ="", occurrences = 0; // Déclaration des variables ici pour qu'elles gardent leur valeur à chaque clic
 
 /* Look for any elements with the class "custom-select": */
 x = document.getElementsByClassName("custom-select");
@@ -256,131 +218,91 @@ for (i = 0; i < l; i++) {
           }
         }
         h.click();
-        /********************** Rajout Nathalie Mota *************************/
-        // let selectedType = s.id;
-        
-        // // Récupère la valeur correspondante en fonction du type de sélection
-        // if (selectedType === "tri_date") {
-        //     tri_date = s.options[s.selectedIndex].value;
-        //     console.log("Tri par date: " + tri_date);
-        // } else if (selectedType === "categorie") {
-        //     categorie = s.options[s.selectedIndex].value;
-        //     console.log("Catégorie: " + categorie);
-        // } else if (selectedType === "format") {
-        //     format = s.options[s.selectedIndex].value;
-        //     console.log("Format: " + format);
-        // }
-        // let ajaxurl = my_ajax_object.ajax_url;
-        // $.ajax({
-        //     url: ajaxurl,
-        //     type: 'POST',
-        //     data: {
-        //         action: 'load_more_photos',
-        //         page: 1,
-        //         categorie: categorie,
-        //         format: format,
-        //         tri_date: tri_date
-        //     },
-        //     success: function(response) {
-        //             let sousChaine = "<img";
-        //             let occurrences = (response.split(sousChaine).length - 1)/3;
-        //             console.log('Variable occurences :',occurrences)
-    
-        //             if ($('#photos').length) {
-        //                 $('#photos').html(response);
-        //                 console.log('(#photos.length) : ',($('#photos').length));
-        //             } 
-        //             else 
-        //             {
-        //                 alert('La balise #photos n\'existe pas dans le DOM.');
-        //             }
-        //             if (occurrences <= 8) { // Si le nombre d'occurrences est inférieur ou égal à 8, masquer le bouton "Afficher plus"
-        //                 $('#load-more').hide();
-        //             } else {
-        //                 $('#load-more').show();
-        //             }
-        //             page = 2;
-        //         },
-            
-        //     function(xhr, status, error) {
-        //         // Traitement à effectuer en cas d'erreur de la requête
-        //         console.error(error);
-        //     }
-        // });        
-
+        /********************** Rajout Nathalie Mota *************************/      
         let selectedType = s.id;
 
-// Récupère la valeur correspondante en fonction du type de sélection
-if (selectedType === "tri_date") {
-    tri_date = s.options[s.selectedIndex].value;
-    console.log("Tri par date: " + tri_date);
-} else if (selectedType === "categorie") {
-    categorie = s.options[s.selectedIndex].value;
-    console.log("Catégorie: " + categorie);
-} else if (selectedType === "format") {
-    format = s.options[s.selectedIndex].value;
-    console.log("Format: " + format);
-}
-let ajaxurl = my_ajax_object.ajax_url;
-
-// Nouvelle action AJAX pour récupérer le nombre de photos filtrées
-$.ajax({
-    url: ajaxurl,
-    type: 'POST',
-    data: {
-        action: 'get_total_photos_filtres',
-        page: 1,
-        categorie: categorie,
-        format: format,
-        tri_date: tri_date
-    },
-    success: function(response) {
-        let occurrences = parseInt(response);
-        console.log('Nombre total de photos :', occurrences);
-
-        // Appeler ensuite la fonction load_more_photos avec le nombre total de photos et d'autres paramètres
-        load_more_photos(occurrences, categorie, format, tri_date);
-    },
-    error: function(error) {
-        console.error(error);
-    }
-});
-function load_more_photos(occurrences, categorie, format, tri_date) {
-    $.ajax({
-        url: ajaxurl,
-        type: 'POST',
-        data: {
-            action: 'load_more_photos',
-            page: page, // Utiliser la variable 'page' définie globalement
-            categorie: categorie,
-            format: format,
-            tri_date: tri_date,
-            occurrences: occurrences
-        },
-        success: function(response) {
-            if ($('#photos').length) {
-                $('#photos').html(response);
-            } else {
-                alert('La balise #photos n\'existe pas dans le DOM.');
-            }
-
-            // Mettre à jour le nombre d'occurrences restantes après chargement
-            occurrences = occurrences - 8;
-
-            // Afficher ou masquer le bouton "Afficher plus" en fonction du nombre total de photos
-            if (occurrences <= 0) {
-                $('#load-more').hide();
-            } else {
-                $('#load-more').show();
-            }
-            page++; // Incrémenter la variable 'page' pour la prochaine requête
-        },
-        error: function(error) {
-            // Traitement à effectuer en cas d'erreur de la requête
-            console.error(error);
+        // Récupère la valeur correspondante en fonction du type de sélection
+        if (selectedType === "tri_date") {
+            tri_date = s.options[s.selectedIndex].value;
+            console.log("Tri par date: " + tri_date);
+        } else if (selectedType === "categorie") {
+            categorie = s.options[s.selectedIndex].value;
+            console.log("Catégorie: " + categorie);
+        } else if (selectedType === "format") {
+            format = s.options[s.selectedIndex].value;
+            console.log("Format: " + format);
         }
-    });
-}
+        let ajaxurl = my_ajax_object.ajax_url;
+
+        // Nouvelle action AJAX pour récupérer le nombre de photos filtrées
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'get_total_photos_filtres',
+                page: 1,
+                categorie: categorie,
+                format: format,
+                tri_date: tri_date
+            },
+            success: function(response) {
+                occurrences = parseInt(response);
+                console.log('Nombre total de photos :', occurrences);
+
+                load_more_photos(occurrences, categorie, format, tri_date);
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+
+        // Nouvelle action AJAX pour charger les photos filtrées
+        function load_more_photos(occurrences, categorie, format, tri_date) {
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'load_more_photos',
+                    page: page,
+                    categorie: categorie,
+                    format: format,
+                    tri_date: tri_date,
+                    occurrences: occurrences
+                },
+                success: function(response) {
+                    if ($('#photos').length) {
+                        $('#photos').html(response);
+                    } else {
+                        alert('La balise #photos n\'existe pas dans le DOM.');
+                    }
+
+                    occurrences = occurrences - 8;
+                    console.log('occurrences avant clic : ', occurrences)
+
+                    if (occurrences <= 0) {
+                        $('#load-more').hide();
+                    } else {
+                        $('#load-more').show();
+                    }
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+
+            // Charger plus de photos filtrées
+            $('#load-more').on('click', function() {
+                occurrences = occurrences - 8;
+                console.log('occurrences après clic : ', occurrences)
+    
+                if (occurrences <= 0) {
+                    $('#load-more').hide();
+                } else {
+                    $('#load-more').show();
+                }
+                page++;
+            });    
+        }
         /********************** Fin du rajout Nathalie Mota *************************/
 
     });
